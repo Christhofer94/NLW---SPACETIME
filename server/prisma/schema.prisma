@@ -1,5 +1,3 @@
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,8 +7,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
-  id String @id @default(uuid())  //chave primaria
-  name String
+  id        String   @id @default(uuid()) //chave primaria
+  githubId  Int      @unique
+  name      String
+  login     String
+  avatarUrl String
+  memories  Memory[]
+}
+
+model Memory {
+  id        String   @id @default(uuid())
+  userId    String
+  coverUrl  String
+  content   String
+  isPublic  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 }
